@@ -15,6 +15,11 @@ public class FareCalculatorService {
 
         //TODO: Some tests are failing here. Need to check if this logic is correct
         double duration = (outHour - inHour) /(1000*60*60);
+        
+        if (duration <= 0.5) {
+        	ticket.setPrice(0);
+        	return;
+        }
 
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {

@@ -123,5 +123,52 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
     }
+    
+    @Test
+    public void calculateFareCarWithLessThan30minutesParkingTime() {
+        // 1. Créez un ticket avec une entrée il y a moins de 30 minutes
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (20 * 60 * 1000)); // 20 minutes avant maintenant
+        Date outTime = new Date();
 
+        // 2. Configurez une place de parking de type CAR
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+        // 3. Initialisez le ticket avec ces données
+        Ticket ticket = new Ticket();
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+
+        // 4. Appelez la méthode calculateFare
+        FareCalculatorService fareCalculatorService = new FareCalculatorService();
+        fareCalculatorService.calculateFare(ticket);
+
+        // 5. Vérifiez que le prix est bien 0 pour moins de 30 minutes
+        assertEquals(0, ticket.getPrice());
+    }
+
+    @Test
+    public void calculateFareBikeWithLessThan30minutesParkingTime() {
+        // 1. Créez un ticket avec une entrée il y a moins de 30 minutes
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (20 * 60 * 1000)); // 20 minutes avant maintenant
+        Date outTime = new Date();
+
+        // 2. Configurez une place de parking de type BIKE
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
+
+        // 3. Initialisez le ticket avec ces données
+        Ticket ticket = new Ticket();
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+
+        // 4. Appelez la méthode calculateFare
+        FareCalculatorService fareCalculatorService = new FareCalculatorService();
+        fareCalculatorService.calculateFare(ticket);
+
+        // 5. Vérifiez que le prix est bien 0 pour moins de 30 minutes
+        assertEquals(0, ticket.getPrice());
+    }
 }
