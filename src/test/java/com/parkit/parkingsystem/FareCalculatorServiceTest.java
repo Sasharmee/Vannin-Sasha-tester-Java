@@ -171,4 +171,53 @@ public class FareCalculatorServiceTest {
         // 5. Vérifiez que le prix est bien 0 pour moins de 30 minutes
         assertEquals(0, ticket.getPrice());
     }
+    @Test
+    public void calculateFareCarWithDiscount() {
+        // 1. Créez un ticket pour une voiture avec une durée > 30 minutes
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - 60 * 60 * 1000); // 1 heure avant maintenant
+        Date outTime = new Date();
+
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+        Ticket ticket = new Ticket();
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+
+        // 2. Appelez calculateFare avec discount = true
+        FareCalculatorService fareCalculatorService = new FareCalculatorService();
+        fareCalculatorService.calculateFare(ticket, true);
+
+        // 3. Calculez le prix attendu (95% du tarif plein)
+        double expectedPrice = 0.95 * Fare.CAR_RATE_PER_HOUR;
+
+        // 4. Vérifiez que le tarif calculé correspond
+        assertEquals(expectedPrice, ticket.getPrice(), 0.01); // tolérance pour les doubles
+    }
+
+    @Test
+    public void calculateFareBikeWithDiscount() {
+        // 1. Créez un ticket pour un vélo avec une durée > 30 minutes
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - 60 * 60 * 1000); // 1 heure avant maintenant
+        Date outTime = new Date();
+
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
+
+        Ticket ticket = new Ticket();
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+
+        // 2. Appelez calculateFare avec discount = true
+        FareCalculatorService fareCalculatorService = new FareCalculatorService();
+        fareCalculatorService.calculateFare(ticket, true);
+
+        // 3. Calculez le prix attendu (95% du tarif plein)
+        double expectedPrice = 0.95 * Fare.BIKE_RATE_PER_HOUR;
+
+        // 4. Vérifiez que le tarif calculé correspond
+        assertEquals(expectedPrice, ticket.getPrice(), 0.01);
+    }
 }
