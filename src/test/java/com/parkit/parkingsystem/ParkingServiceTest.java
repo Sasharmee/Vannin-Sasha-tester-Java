@@ -143,4 +143,5 @@ public class ParkingServiceTest {
         verify(parkingSpotDAO, never()).getNextAvailableSlot(any(ParkingType.class));
     }
 
+   
 }
